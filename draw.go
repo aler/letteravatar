@@ -28,9 +28,9 @@ type Options struct {
 
 var defaultLetterColor = color.RGBA{0xf0, 0xf0, 0xf0, 0xf0}
 
-// Draw generates a new letter-avatar image of the given size using the given letter
+// Draw generates a new two-letters-avatar image of the given size using the given letters
 // with the given options. Default parameters are used if a nil *Options is passed.
-func Draw(size int, letter rune, options *Options) (image.Image, error) {
+func Draw(size int, fst, snd rune, options *Options) (image.Image, error) {
 	font := defaultFont
 	if options != nil && options.Font != nil {
 		font = options.Font
@@ -55,14 +55,14 @@ func Draw(size int, letter rune, options *Options) (image.Image, error) {
 		}
 	}
 
-	return drawAvatar(bgColor, letterColor, font, size, letter)
+	return drawAvatar(bgColor, letterColor, font, size, fst, snd)
 }
 
-func drawAvatar(bgColor, fgColor color.Color, font *truetype.Font, size int, letter rune) (image.Image, error) {
+func drawAvatar(bgColor, fgColor color.Color, font *truetype.Font, size int, fst, snd rune) (image.Image, error) {
 	dst := newRGBA(size, size, bgColor)
 
 	fontSize := float64(size) * 0.6
-	src, err := drawString(bgColor, fgColor, font, fontSize, string(letter))
+	src, err := drawString(bgColor, fgColor, font, fontSize, string(fst)+string(snd))
 	if err != nil {
 		return nil, err
 	}
